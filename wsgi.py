@@ -169,7 +169,7 @@ class Midterm(object):
         
     @cherrypy.expose
     # N 為齒數, M 為模數, P 為壓力角
-    def drawspur(self, N=20, M=5, P=15):
+    def drawspur(self, N=20, O=20, I=20, M=5, P=15):
         outstring = '''
     <!DOCTYPE html> 
     <html>
@@ -199,16 +199,32 @@ class Midterm(object):
         return outstring
     @cherrypy.expose
     # N 為齒數, M 為模數, P 為壓力角
-    def drawspuraction(self, N=20, M=5, P=15):
+    def drawspuraction(self, N1=20, N2=20, N3=20, N4=20, N5=20, N6=20, M=5, P=15):
         outstring = '''
     <!DOCTYPE html> 
     <html>
     <head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <!-- 載入 brython.js -->
+    <script type="text/javascript" src="/static/Brython3.1.1-20150328-091302/brython.js"></script>
+    <script src="/static/Cango2D.js" type="text/javascript"></script>
+    <script src="/static/gearUtils-04.js" type="text/javascript"></script>
     </head>
-    <body>
-    <a href="index">index</a><br />
-        
+    <!-- 啟動 brython() -->
+    <body onload="brython()">
+
+    <form method=POST action=mygeartest2>
+    齒數1:<input type=text name=N1><br />
+    齒數2:<input type=text name=N2><br />
+    齒數3:<input type=text name=N3><br />
+    齒數4:<input type=text name=N4><br />
+    齒數5:<input type=text name=N5><br />
+    齒數6:<input type=text name=N6><br />
+    模數:<input type=text name=M><br />
+    壓力角:<input type=text name=P><br />
+    <input type=submit value=send>
+    </form>
+
     <!-- 以下為 canvas 畫圖程式 -->
     <script type="text/python">
     # 從 browser 導入 document
@@ -221,27 +237,130 @@ class Midterm(object):
     canvas = document["plotarea"]
     ctx = canvas.getContext("2d")
 
-    # 以下利用 spur.py 程式進行繪圖
-    # N 為齒數
-    N = '''+str(N)+'''
-    # M 為模數
-    M = '''+str(M)+'''
-    # 壓力角 P 單位為角度
-    P = '''+str(P)+'''
+    # 以下利用 spur.py 程式進行繪圖, 接下來的協同設計運算必須要配合使用者的需求進行設計運算與繪圖
+    # 其中並將工作分配給其他組員建立類似 spur.py 的相關零件繪圖模組
+    # midx, midy 為齒輪圓心座標, rp 為節圓半徑, n 為齒數, pa 為壓力角, color 為線的顏色
+    # Gear(midx, midy, rp, n=20, pa=20, color="black"):
+    # 模數決定齒的尺寸大小, 囓合齒輪組必須有相同的模數與壓力角
+    # 壓力角 pa 單位為角度
+    pa = '''+str(P)+'''
+    # m 為模數
+    m = '''+str(M)+'''
+    # 第1齒輪齒數
+    n_g1 ='''+str(N1)+'''
+    # 第2齒輪齒數
+    n_g2 = '''+str(N2)+'''
+    # 第3齒輪齒數
+    n_g3 = '''+str(N3)+'''
+    #第4齒齒數
+    n_g4 = '''+str(N4)+'''
+    #第4齒齒數
+    n_g5 = '''+str(N5)+'''
+    #第6齒齒數
+    n_g6 = '''+str(N6)+'''
     # 計算兩齒輪的節圓半徑
-    rp = N*M/2
+    rp_g1 = m*n_g1/2
+    rp_g2 = m*n_g2/2
+    rp_g3 = m*n_g3/2
+    rp_g4 = m*n_g4/2
+    rp_g5 = m*n_g5/2
+    rp_g6 = m*n_g6/2
 
-    spur.Spur(ctx).Gear(600, 600, rp, N, P, "blue")
+    # 繪圖第1齒輪的圓心座標
+    x_g1 = 400
+    y_g1 = 400
+    # 第2齒輪的圓心座標, 假設排列成水平, 表示各齒輪圓心 y 座標相同
+    x_g2 = x_g1 + rp_g1 + rp_g2
+    y_g2 = y_g1
+    # 第3齒輪的圓心座標
+    x_g3 = x_g1 + rp_g1 + 2*rp_g2 + rp_g3
+    y_g3 = y_g1
+    # 第4齒輪的圓心座標
+    x_g4 = x_g1 + rp_g1 + 2*rp_g2 +2* rp_g3+rp_g4
+    y_g4 = y_g1
+    # 第五齒輪的圓心座標
+    x_g5 = x_g1 + rp_g1 + 2*rp_g2 +2* rp_g3+2*rp_g4+rp_g5
+    y_g5 = y_g1
+    # 第六齒輪的圓心座標
+    x_g6 = x_g1 + rp_g1 + 2*rp_g2 +2* rp_g3+2*rp_g4+2*rp_g5+rp_g6
+    y_g6 = y_g1
+
+    # 將第1齒輪順時鐘轉 90 度
+    # 使用 ctx.save() 與 ctx.restore() 以確保各齒輪以相對座標進行旋轉繪圖
+    ctx.save()
+    # translate to the origin of second gear
+    ctx.translate(x_g1, y_g1)
+    # rotate to engage
+    ctx.rotate(pi/2)
+    # put it back
+    ctx.translate(-x_g1, -y_g1)
+    spur.Spur(ctx).Gear(x_g1, y_g1, rp_g1, n_g1, pa, "blue")
+    ctx.restore()
+
+    # 將第2齒輪逆時鐘轉 90 度之後, 再多轉一齒, 以便與第1齒輪進行囓合
+    ctx.save()
+    # translate to the origin of second gear
+    ctx.translate(x_g2, y_g2)
+    # rotate to engage
+    ctx.rotate(-pi/2-pi/n_g2)
+    # put it back
+    ctx.translate(-x_g2, -y_g2)
+    spur.Spur(ctx).Gear(x_g2, y_g2, rp_g2, n_g2, pa, "black")
+    ctx.restore()
+
+    # 將第3齒輪逆時鐘轉 90 度之後, 再往回轉第2齒輪定位帶動轉角, 然後再逆時鐘多轉一齒, 以便與第2齒輪進行囓合
+    ctx.save()
+    # translate to the origin of second gear
+    ctx.translate(x_g3, y_g3)
+    # rotate to engage
+    # pi+pi/n_g2 為第2齒輪從順時鐘轉 90 度之後, 必須配合目前的標記線所作的齒輪 2 轉動角度, 要轉換到齒輪3 的轉動角度
+    # 必須乘上兩齒輪齒數的比例, 若齒輪2 大, 則齒輪3 會轉動較快
+    # 第1個 -pi/2 為將原先垂直的第3齒輪定位線逆時鐘旋轉 90 度
+    # -pi/n_g3 則是第3齒與第2齒定位線重合後, 必須再逆時鐘多轉一齒的轉角, 以便進行囓合
+    # (pi+pi/n_g2)*n_g2/n_g3 則是第2齒原定位線為順時鐘轉動 90 度, 
+    # 但是第2齒輪為了與第1齒輪囓合, 已經距離定位線, 多轉了 180 度, 再加上第2齒輪的一齒角度, 因為要帶動第3齒輪定位, 
+    # 這個修正角度必須要再配合第2齒與第3齒的轉速比加以轉換成第3齒輪的轉角, 因此乘上 n_g2/n_g3
+    ctx.rotate(-pi/2-pi/n_g3+(pi+pi/n_g2)*n_g2/n_g3)
+    # put it back
+    ctx.translate(-x_g3, -y_g3)
+    spur.Spur(ctx).Gear(x_g3, y_g3, rp_g3, n_g3, pa, "red")
+    ctx.restore()
+
+    #第四齒
+    ctx.save()
+    # translate to the origin of second gear
+    ctx.translate(x_g4, y_g4)
+    # rotate to engage
+    ctx.rotate(-pi/2-pi/n_g4)
+    # put it back
+    ctx.translate(-x_g4, -y_g4)
+    spur.Spur(ctx).Gear(x_g4, y_g4, rp_g4, n_g4, pa, "yellow")
+    ctx.restore()
+    #第五齒
+    ctx.save()
+    # translate to the origin of second gear
+    ctx.translate(x_g5, y_g5)
+    # rotate to engage
+    ctx.rotate(-pi/2-pi/n_g5+(pi+pi/n_g4)*n_g4/n_g5)
+    # put it back
+    ctx.translate(-x_g5, -y_g5)
+    spur.Spur(ctx).Gear(x_g5, y_g5, rp_g5, n_g5, pa, "green")
+    ctx.restore()
+    #第六齒
+    ctx.save()
+    # translate to the origin of second gear
+    ctx.translate(x_g6, y_g6)
+    # rotate to engage
+    ctx.rotate(-pi/2-pi/n_g6)
+    # put it back
+    ctx.translate(-x_g6, -y_g6)
+    spur.Spur(ctx).Gear(x_g6, y_g6, rp_g6, n_g6, pa, "pink")
+    ctx.restore()
+
+    # 按照上面三個正齒輪的囓合轉角運算, 隨後的傳動齒輪轉角便可依此類推, 完成6個齒輪的囓合繪圖
 
     </script>
     <canvas id="plotarea" width="1200" height="1200"></canvas>
-    <!-- 載入 brython.js -->
-    <script type="text/javascript" src="/static/Brython3.1.1-20150328-091302/brython.js"></script>
-    <script>
-    window.onload=function(){
-    brython();
-    }
-    </script>
     </body>
     </html>
     '''
