@@ -720,7 +720,7 @@ brython();
 </t>
 <t tx="2015.20150526114814.1">@cherrypy.expose
 # N 為齒數, M 為模數, P 為壓力角
-def drawspuraction1(self, N1=20, N2=20, N3=20, N4=20, N5=20, N6=20, M=5, P=15):
+def drawspuraction1(self, N1=20, N2=30, N3=40, N4=50, N5=60, N6=70, M=5, P=15):
     outstring = '''
 &lt;!DOCTYPE html&gt; 
 &lt;html&gt;
@@ -874,7 +874,7 @@ ctx.restore()
     return outstring</t>
 <t tx="2015.20150526114819.1">@cherrypy.expose
 # N 為齒數, M 為模數, P 為壓力角
-def drawspur1(self, N1=20, N2=20, N3=20, N4=20, N5=20, N6=20, M=5, P=15):
+def drawspur1(self, N1=20, N2=30, N3=40, N4=50, N5=60, N6=70, M=5, P=15):
     outstring = '''
 &lt;!DOCTYPE html&gt; 
 &lt;html&gt;
@@ -884,6 +884,7 @@ def drawspur1(self, N1=20, N2=20, N3=20, N4=20, N5=20, N6=20, M=5, P=15):
 &lt;body&gt;
     
 &lt;form method=POST action=drawspuraction1&gt;
+
 齒數1:&lt;input type=text name=N1 value='''+str(N1)+'''&gt;&lt;br /&gt;
 齒數2:&lt;input type=text name=N2 value='''+str(N2)+'''&gt;&lt;br /&gt;
 齒數3:&lt;input type=text name=N3 value='''+str(N3)+'''&gt;&lt;br /&gt;
@@ -910,7 +911,7 @@ brython();
     return outstring</t>
 <t tx="2015.20150526114825.1">@cherrypy.expose
 # N 為齒數, M 為模數, P 為壓力角
-def spuraction(self, N=20, M=5, P=15):
+def spuraction1(self, N1=20, N2=30, N3=40, N4=50, N5=60, N6=70, M=5, P=15):
     output = '''
     &lt;!doctype html&gt;&lt;html&gt;
     &lt;head&gt;
@@ -927,7 +928,7 @@ def spuraction(self, N=20, M=5, P=15):
     output += "齒數6為"+str(N6)+"&lt;br /&gt;"      
     output += "模數為"+str(M)+"&lt;br /&gt;"
     output += "壓力角為"+str(P)+"&lt;br /&gt;"
-    output +='''&lt;br /&gt;&lt;a href="/spur"&gt;spur&lt;/a&gt;(按下後再輸入)&lt;br /&gt;'''
+    output +='''&lt;br /&gt;&lt;a href="/spur1"&gt;spur1&lt;/a&gt;(按下後再輸入)&lt;br /&gt;'''
     output +='''&lt;br /&gt;&lt;a href="index"&gt;index&lt;/a&gt;&lt;br /&gt;
     &lt;/body&gt;
     &lt;/html&gt;
@@ -939,7 +940,7 @@ def spuraction(self, N=20, M=5, P=15):
 </t>
 <t tx="2015.20150526114831.1">@cherrypy.expose
 # N 為齒數, M 為模數, P 為壓力角
-def spur1(self, N1=20, N2=20, N3=20, N4=20, N5=20, N6=20, M=5, P=15):
+def spur1(self, N1=20, N2=30, N3=40, N4=50, N5=60, N6=70, M=5, P=15):
     outstring = '''
 &lt;!DOCTYPE html&gt; 
 &lt;html&gt;

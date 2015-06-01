@@ -234,7 +234,7 @@ class Midterm(object):
         return outstring
     @cherrypy.expose
     # N 為齒數, M 為模數, P 為壓力角
-    def spur1(self, N1=20, N2=20, N3=20, N4=20, N5=20, N6=20, M=5, P=15):
+    def spur1(self, N1=20, N2=30, N3=40, N4=50, N5=60, N6=70, M=5, P=15):
         outstring = '''
     <!DOCTYPE html> 
     <html>
@@ -265,7 +265,7 @@ class Midterm(object):
         return outstring
     @cherrypy.expose
     # N 為齒數, M 為模數, P 為壓力角
-    def spuraction(self, N=20, M=5, P=15):
+    def spuraction1(self, N1=20, N2=30, N3=40, N4=50, N5=60, N6=70, M=5, P=15):
         output = '''
         <!doctype html><html>
         <head>
@@ -282,7 +282,7 @@ class Midterm(object):
         output += "齒數6為"+str(N6)+"<br />"      
         output += "模數為"+str(M)+"<br />"
         output += "壓力角為"+str(P)+"<br />"
-        output +='''<br /><a href="/spur">spur</a>(按下後再輸入)<br />'''
+        output +='''<br /><a href="/spur1">spur1</a>(按下後再輸入)<br />'''
         output +='''<br /><a href="index">index</a><br />
         </body>
         </html>
@@ -293,7 +293,7 @@ class Midterm(object):
         
     @cherrypy.expose
     # N 為齒數, M 為模數, P 為壓力角
-    def drawspur1(self, N1=20, N2=20, N3=20, N4=20, N5=20, N6=20, M=5, P=15):
+    def drawspur1(self, N1=20, N2=30, N3=40, N4=50, N5=60, N6=70, M=5, P=15):
         outstring = '''
     <!DOCTYPE html> 
     <html>
@@ -303,6 +303,7 @@ class Midterm(object):
     <body>
         
     <form method=POST action=drawspuraction1>
+
     齒數1:<input type=text name=N1 value='''+str(N1)+'''><br />
     齒數2:<input type=text name=N2 value='''+str(N2)+'''><br />
     齒數3:<input type=text name=N3 value='''+str(N3)+'''><br />
@@ -329,7 +330,7 @@ class Midterm(object):
         return outstring
     @cherrypy.expose
     # N 為齒數, M 為模數, P 為壓力角
-    def drawspuraction1(self, N1=20, N2=20, N3=20, N4=20, N5=20, N6=20, M=5, P=15):
+    def drawspuraction1(self, N1=20, N2=30, N3=40, N4=50, N5=60, N6=70, M=5, P=15):
         outstring = '''
     <!DOCTYPE html> 
     <html>
